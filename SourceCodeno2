@@ -1,0 +1,58 @@
+#include <stdio.h>
+
+//Fungsi untuk mengecek apakah posisi (x, y) valid pada papan catur 8x8
+int valid(int x, int y) {
+    return (x >= 0 && x < 8 && y >= 0 && y < 8);
+}
+
+//Fungsi untuk menandai semua langkah yang mungkin dilakukan oleh kuda pada papan catur
+void koboImaginaryChess(int i, int j, int size, int *chessBoard) {
+    //Langkah-langkah yang mungkin dilakukan oleh kuda
+    int geserX[] = {2, 1, -1, -2, -2, -1, 1, 2};
+    int geserY[] = {1, 2, 2, 1, -1, -2, -2, -1};
+
+    //Menandai setiap langkah yang mungkin dilakukan oleh kuda
+    for (int k = 0; k < 8; k++) {
+        int lanjutX = i + geserX[k];
+        int lanjutY = j + geserY[k];
+        if (valid(lanjutX, lanjutY)) {
+            *(chessBoard + lanjutX * size + lanjutY) = 1; // Menandai langkah kuda dengan nilai 1
+        }
+    }
+}
+
+//Fungsi untuk menampilkan papan catur
+void printBoard(int size, int chessBoard[][size]){
+     for (int x = 0; x < size; x++) {
+        for (int y = 0; y < size; y++) {
+            printf("%d ", chessBoard[x][y]);
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    int i, j;
+
+    //Menginputkan posisi i dan j
+    printf("Masukkan posisi i dan j : ");
+    scanf("%d %d", &i, &j); 
+
+    int size = 8; // Ukuran papan catur
+    int chessBoard[size][size]; // Array 2D untuk papan catur
+
+    // Inisialisasi papan catur dengan nilai awal 0
+    for (int x = 0; x < size; x++) {
+        for (int y = 0; y < size; y++) {
+            chessBoard[x][y] = 0;
+        }
+    }
+
+    //Memanggil Fungsi untuk menandai setiap langkah kuda
+    koboImaginaryChess(i, j, size, (int *)chessBoard); 
+
+    //Memanggil Fungsi menampilkan papan catur
+    printBoard(size, chessBoard);
+
+    return 0;
+}
