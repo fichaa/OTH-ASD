@@ -1,0 +1,76 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+//Fungsi untuk mendapatkan nilai angka dari kartu
+int getCardValue(char card) {
+    //Fungsi ini mengembalikan nilai angka yang sesuai dengan kartu yang diterima 
+    if (card == 'J') return 11; //Kartu J memiliki nilai 11
+    else if (card == 'Q') return 12; //Q memiliki nilai 12
+    else if (card == 'K') return 13; //K memiliki nilai 13
+    else if (card == '1') return 10; //1 (as) memiliki nilai 10
+                                     // sedankan angka lainnya sama dengan nilainya sendiri.
+    else return (int)(card - '0'); //Mengubah char angka menjadi int dg mengurangkan nilai ASCII '0'
+}
+
+// Fungsi ini mencetak urutan kartu 
+void printCards(char *cards, int n) {
+    for (int i = 0; i < n; i++) {
+        printf("%c ", cards[i]);
+    }
+    printf("\n");
+}
+
+// Fungsi untuk mengurutkan kartu menggunakan selectionSort
+int sortCards(char *cards, int n) {
+    int swaps = 0; //Deklarasi variabel untuk menghitung jumlah pertukaran kartu
+    for (int i = 0; i < n - 1; i++) {
+        int min_idx = i; //Inisiasi indeks kartu terkecil
+        for (int j = i; j < n; j++) 
+        {
+            // Konversi kartu ke nilai angka untuk membandingkan
+            if (getCardValue(cards[j]) < getCardValue(cards[min_idx])) {
+                min_idx = j;
+            }
+        }
+        if (min_idx != i) 
+        {
+            //Menukar kartu jika kartu terkecil tidak berada pd posisi awal
+            char temp = cards[i];
+            cards[i] = cards[min_idx];
+            cards[min_idx] = temp;
+            swaps++;
+
+            //Menampilkan urutan kartu di setiap pertukarannya
+            printf("Pertukaran %d : ", swaps);
+            printCards(cards, n);
+        }
+        
+    }
+    return swaps;
+}
+
+int main() {
+    int n;
+
+    //Menginputkan jumlah kartu 
+    printf("Masukkan jumlah kartu : ");
+    scanf("%d", &n);
+
+    char cards[n]; //Deklarasi array cards
+
+    //Menginputkan nilai kartu 
+    printf("Masukkan nilai kartu : ");
+    for (int i = 0; i < n; i++) {
+        scanf(" %c", &cards[i]);
+    }
+
+    //Memanggil fungsi sortCrads
+    int swaps = sortCards(cards, n);
+
+    //Menampilkan jumlah minimal langkah pertukan kartu yang terjadi dari jumlah dan nilai kartu yang telah di inputkan
+    printf("\nJumlah minimal langkah pertukaran : %d\n", swaps);
+
+    free(cards);
+    return 0;
+}
